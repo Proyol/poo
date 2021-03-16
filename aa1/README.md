@@ -4,8 +4,7 @@ Um simulador de corrida de veículos irá controlar veículos através de seu ce
 
 Cada veículo criado possuirá uma identificação única (que deverá ser um número inteiro, gerado automaticamente) e uma quantidade de **4 rodas** (cujos pneus estarão calibrados ou não de acordo com um sorteio). Além disso, os veículos terão uma quantidade inicial de combustível, **3,5 litros, o valor e se o IPVA (Imposto sobre a Propriedade de Veículos Automotores) do veículo está pago ou não**.
 
-Os veículos podem ser abastecidos e consomem combustível à medida que se deslocam. Eles apenas se movimentam se há combustável suficiente para tal, se os pneus das rodas estiverem todos calibrados e se o IPVA estiver pago. Assume-se que para mover um *“bloco”* de espaço, **o veículo gaste 0,55 litros de combustível**. Portanto, um veículo automotivo *não*
-deve se movimentar se:
+Os veículos podem ser abastecidos e consomem combustível à medida que se deslocam. Eles apenas se movimentam se há combustável suficiente para tal, se os pneus das rodas estiverem todos calibrados e se o IPVA estiver pago. Assume-se que para mover um *“bloco”* de espaço, **o veículo gaste 0,55 litros de combustível**. Portanto, um veículo automotivo *não* deve se movimentar se:
 
 - não possuir a quantidade de combustível suficiente,
 - se um ou mais pneus não estiverem calibrados
