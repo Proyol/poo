@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
 public class Simulador {
+    private static final int N_VEICULOS = 20;
     // array de veículos com o total de 20 veiculos
-    private static Veiculo[] veiculos = new Veiculo[20];
+    private static Veiculo[] veiculos = new Veiculo[N_VEICULOS];
 
     public static void main(String[] args) {
         menu();
@@ -56,19 +57,31 @@ public class Simulador {
                 break;
             }
             case 2: {
-                excluirVeiculo();
+                // solicitar o id do veiculo a ser excluido pelo usuário
+                int id = solicitarID();
+
+                excluirVeiculo(id);
                 break;
             }
             case 3: {
-                abastecerVeiculo();
+                // solicitar o id do veiculo a ser abastecido
+                int id = solicitarID();
+
+                // usuário deve informar a quantidade de combustível a abastecer
+                System.out.print("\nInforme a quantidade de combustível a ser adicionada: ");
+                Scanner sc = new Scanner(System.in);
+                double quantidade = sc.nextFloat();
+
+                abastecerVeiculo(id, quantidade);
                 break;
             }
             case 4: {
-                movimentarVeiculo();
+                int id = solicitarID();
+                movimentarVeiculo(id);
                 break;
             }
             case 5: {
-                movimentarTodosVeiculos();
+                movimentarVeiculo();
                 break;
             }
             case 6: {
@@ -76,15 +89,32 @@ public class Simulador {
                 break;
             }
             case 7: {
-                esvaziarPneuDeVeiculo();
+                // solicitar o id do veículo a calibrar os pneus
+                int id = solicitarID();
+
+                // solicitar o pneu a ser esvaziado
+                System.out.print("\nInforme o pneu a ser esvaziada: ");
+                Scanner sc = new Scanner(System.in);
+                int pneu = sc.nextInt();
+
+                esvaziarPneuDeVeiculo(id, pneu);
                 break;
             }
             case 8: {
-                calibrarPneusDeVeiculo();
+                // solicitar o id do veículo a calibrar os pneus
+                int id = solicitarID();
+
+                // solicitar o pneu a ser calibrado
+                System.out.print("\nInforme o pneu a ser calibrado: ");
+                Scanner sc = new Scanner(System.in);
+                int pneu = sc.nextInt();
+
+                // verificar se o veículo existe
+                calibrarPneusDeVeiculo(id, pneu);
                 break;
             }
             case 9: {
-                calibrarTodasPneusDeTodosVeiculos();
+                calibrarPneusDeVeiculo();
                 break;
             }
             case 10: {
@@ -117,7 +147,6 @@ public class Simulador {
             // incluir o veiculo caso haja posição disponível
             if (veiculos[i] == null) {
                 veiculos[i] = new Veiculo(i);
-                veiculos[i].iniciarVeiculo();
 
                 // forçar saida do for
                 i = veiculos.length;
@@ -134,10 +163,7 @@ public class Simulador {
         }
     }
 
-    public static void excluirVeiculo() {
-        // solicitar o id do veiculo a ser excluido pelo usuário
-        int id = solicitarID();
-
+    public static void excluirVeiculo(int id) {
         // verificar se o veiculo existe no array
         if (veiculos[id] != null && id >= 0 && id < veiculos.length) {
 
@@ -151,19 +177,15 @@ public class Simulador {
         }
     }
 
-    public static void abastecerVeiculo() {
-        // usuário deve informar a quantidade de combustível a abastecer
-        Scanner teclado = new Scanner(System.in);
-        double quantidade = teclado.nextFloat();
-        teclado.close();
-
-        // solicitar o id do veiculo a ser abastecido
-        int id = solicitarID();
+    public static void abastecerVeiculo(int id, double quantidade) {
         if (veiculos[id] != null) {
 
             // caso o veiculo for encontrado
-            veiculos[id].abastecer(quantidade);
-            System.out.println("\nVeículo abastecido com sucesso");
+            if (veiculos[id].abastecer(quantidade)) {
+                System.out.println("\nVeículo abastecido com sucesso");
+            } else {
+                System.out.println("\nInforme um quantidade de combustível válida");
+            }
         } else {
 
             // caso o veiculo NÃO for encontrado
@@ -171,9 +193,7 @@ public class Simulador {
         }
     }
 
-    public static void movimentarVeiculo() {
-        // solicitar o id do veiculo que deve ser movido
-        int id = solicitarID();
+    public static void movimentarVeiculo(int id) {
 
         // verificar se o veículo foi movimento e validar se sua movimentação foi bem
         // sucedida
@@ -188,7 +208,7 @@ public class Simulador {
         }
     }
 
-    public static void movimentarTodosVeiculos() {
+    public static void movimentarVeiculo() {
         // percorrer todos os veículos e eventualmente movimenta-los
         for (Veiculo veiculo : veiculos) {
             if (veiculo != null) {
@@ -208,18 +228,9 @@ public class Simulador {
         }
     }
 
-    public static void esvaziarPneuDeVeiculo() {
-        Scanner teclado = new Scanner(System.in);
-        int pneu;
-
-        // solicitar o id do veículo a esvaziar os pneus
-        int id = solicitarID();
-
+    public static void esvaziarPneuDeVeiculo(int id, int pneu) {
         // verificar se o veículo existe
         if (veiculos[id] != null) {
-            System.out.print("\nInforme a pneu a ser esvaziada: ");
-            pneu = teclado.nextInt();
-
             // verificar se a pneu informada é válida
             if (pneu >= 0 && pneu < 4) {
                 veiculos[id].esvaziarPneu(pneu);
@@ -239,20 +250,10 @@ public class Simulador {
         }
     }
 
-    public static void calibrarPneusDeVeiculo() {
-        Scanner teclado = new Scanner(System.in);
-        int pneu;
-
-        // solicitar o id do veículo a calibrar os pneus
-        int id = solicitarID();
-
-        // verificar se o veículo existe
+    public static void calibrarPneusDeVeiculo(int id, int pneu) {
         if (veiculos[id] != null) {
-            System.out.print("\nInforme a pneu a ser esvaziada: ");
-            pneu = teclado.nextInt();
-
             if (pneu >= 0 && pneu < 4) {
-                veiculos[id].esvaziarPneu(pneu);
+                veiculos[id].calibrarPneu(pneu);
 
                 // Pneus calibrados com sucesso
                 System.out.println("\nPneus calibradas com sucesso");
@@ -267,11 +268,14 @@ public class Simulador {
         }
     }
 
-    public static void calibrarTodasPneusDeTodosVeiculos() {
+    // sobrecarga do método calibrarPneusDeVeiculo
+    // caso o usuário não informar a roda e o id do carro todos os pneus de todos os
+    // carros serão calibrados
+    public static void calibrarPneusDeVeiculo() {
         // percorrer todos os veículos e calibrar o pneu de cada um
         for (Veiculo veiculo : veiculos) {
             if (veiculo != null) {
-                veiculo.calibrarTodasOsPneus();
+                veiculo.calibrarPneu();
             }
         }
 

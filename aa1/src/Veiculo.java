@@ -2,22 +2,33 @@ import java.util.*;
 
 // classe veículo, o simulador poderá ter no máximo 20 veículos
 public class Veiculo {
+    private final int N_RODAS = 4; // número de pneus
+
+    private static double tanque; // capacidade do tanque do veículo
+    private static double valor; // valor do veículo
+
     private int id; // id do veículo
-    private int n; // número de pneus
     private Roda[] rodas; // rodas do veículo
     private double combustivel; // quantidade de combustível do veículo
-    private double valor; // valor do veículo
     private boolean ipvaPago; // controlar se o ipva está pago ou não
     private int blocosAndados; // quantidade de blocos andados
 
     // método construtor para iniciar todas as variáveis da classe
     public Veiculo(int id) {
-        this.id = 0;
-        this.n = 0;
-        this.combustivel = 0;
-        this.valor = 0;
-        this.ipvaPago = false;
-        this.blocosAndados = 0;
+        this.id = id;
+        this.combustivel = 3.5; // combustível em litros
+
+        Veiculo.tanque = 50; // capacidade do tanque em litros
+        Veiculo.valor = 20000; // valor em R$
+
+        // iniciar as rodas
+        this.rodas = new Roda[this.N_RODAS];
+        this.iniciarPneus();
+
+        // iniciar o ipva
+        // caso de r for par o ipva está pago, caso contrário não
+        Random r = new Random();
+        this.ipvaPago = r.nextInt(100) % 2 == 0 ? true : false;
     }
 
     // função para retornar o id do veículo
@@ -31,7 +42,7 @@ public class Veiculo {
         Random r = new Random(); // classe Random do java.util
 
         // percorrer todas as rodas do veículo
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < this.N_RODAS; i++) {
             this.rodas[i] = new Roda(); // criar nova roda
             int c = r.nextInt(100);
 
@@ -42,25 +53,22 @@ public class Veiculo {
         }
     }
 
-    // função para setar todas as variáveis do veículo para valores padrões
-    public void iniciarVeiculo() {
-        this.combustivel = 3.5; // combustível em litros
-        this.valor = 20000; // valor em R$
-
-        // iniciar as rodas
-        this.n = 4;
-        this.rodas = new Roda[n];
-        iniciarPneus();
-
-        // iniciar o ipva
-        // caso de r for par o ipva está pago, caso contrário não
-        Random r = new Random();
-        this.ipvaPago = r.nextInt(100) % 2 == 0 ? true : false;
-    }
-
     // função para abastecer o veículo
-    public void abastecer(double quantidade) {
-        this.combustivel += quantidade;
+    public boolean abastecer(double quantidade) {
+        if (quantidade >= 0) {
+            if (this.combustivel + quantidade <= Veiculo.tanque) {
+                // caso a quantidade de combustível couber no tanque
+                this.combustivel += quantidade;
+            } else {
+                // caso a quantidade de combustível for maior que o limite do tanque, deve-se
+                // encher tudo até completar
+                this.combustivel += Veiculo.tanque - this.combustivel;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     // função que verificar se o veículo pode moder
@@ -106,14 +114,24 @@ public class Veiculo {
         this.rodas[roda].setCalibragem(false);
     }
 
+    // sobrecarga do método esvaziarPneu
+    // caso o usuário não informar a roda será esvaziado todas
+    public void esvaziarPneu() {
+        // percorrer todas as rodas e esvaziar os pneus
+        for (Roda roda : rodas) {
+            roda.setCalibragem(false);
+        }
+    }
+
     // função para calibrar um pneu do veículo
     // o pneu a ser calibrada é passado por parâmetro
     public void calibrarPneu(int roda) {
         this.rodas[roda].setCalibragem(true);
     }
 
-    // função para calibrar os pneus do veículo
-    public void calibrarTodasOsPneus() {
+    // sobrecarga do método calibrarPneu
+    // caso o usuário não informar a roda será calibrado todas
+    public void calibrarPneu() {
         // percorrer todas as rodas e calibrar os pneus
         for (Roda roda : rodas) {
             roda.setCalibragem(true);
@@ -152,7 +170,7 @@ public class Veiculo {
         // calibragem dos pneus
         int i;
         String pneusCalibrados = "Pneus Calibradas: ";
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < this.N_RODAS; i++) {
             pneusCalibrados += this.rodas[i].getCalibragem() ? "1 " : "0 ";
         }
         s += pneusCalibrados + '\n';
