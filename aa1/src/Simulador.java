@@ -110,11 +110,11 @@ public class Simulador {
                 int pneu = sc.nextInt();
 
                 // verificar se o veículo existe
-                calibrarPneusDeVeiculo(id, pneu);
+                calibrarPneuDeVeiculo(id, pneu);
                 break;
             }
             case 9: {
-                calibrarPneusDeVeiculo();
+                calibrarPneuDeVeiculo();
                 break;
             }
             case 10: {
@@ -240,17 +240,17 @@ public class Simulador {
             } else {
 
                 // NÃO foi possível esvaziar os pneus
-                System.out.println("\nInforme um valor válido para as Pneus");
+                System.out.println("\nInforme um valor válido para os Pneus");
             }
 
         } else {
 
             // NÃO foi possível esvaziar os pneus
-            System.out.println("\nNão foi possível esvaziadar as Pneus");
+            System.out.println("\nNão foi possível esvaziadar os Pneus");
         }
     }
 
-    public static void calibrarPneusDeVeiculo(int id, int pneu) {
+    public static void calibrarPneuDeVeiculo(int id, int pneu) {
         if (veiculos[id] != null) {
             if (pneu >= 0 && pneu < 4) {
                 veiculos[id].calibrarPneu(pneu);
@@ -259,7 +259,7 @@ public class Simulador {
                 System.out.println("\nPneus calibradas com sucesso");
             } else {
                 // NÃO foi possível esvaziar os pneus
-                System.out.println("\nInforme um valor válido para as Pneus");
+                System.out.println("\nInforme um valor válido para os Pneus");
             }
         } else {
 
@@ -268,10 +268,10 @@ public class Simulador {
         }
     }
 
-    // sobrecarga do método calibrarPneusDeVeiculo
+    // sobrecarga do método calibrarPneuDeVeiculo
     // caso o usuário não informar a roda e o id do carro todos os pneus de todos os
     // carros serão calibrados
-    public static void calibrarPneusDeVeiculo() {
+    public static void calibrarPneuDeVeiculo() {
         // percorrer todos os veículos e calibrar o pneu de cada um
         for (Veiculo veiculo : veiculos) {
             if (veiculo != null) {
