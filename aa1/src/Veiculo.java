@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 // classe veículo, o simulador poderá ter no máximo 20 veículos
 public class Veiculo {
@@ -17,6 +17,7 @@ public class Veiculo {
     public Veiculo(int id) {
         this.id = id;
         this.combustivel = 3.5; // combustível em litros
+        this.blocosAndados = 0;
 
         Veiculo.tanque = 50; // capacidade do tanque em litros
         Veiculo.valor = 20000; // valor em R$
@@ -77,16 +78,15 @@ public class Veiculo {
     // 2 - Possir combustível suficiente (cada movimento reduz 0,55L do tanque)
     // 3 - O ipva estiver pago
     private boolean podeMover() {
-        boolean pneusCalibrados = true;
-
         // verificar se todas os pneus estão calibrar
         for (Roda roda : this.rodas) {
             if (!roda.getCalibragem()) {
-                pneusCalibrados = false;
+                // roda não calibrada encontrada
+                return false;
             }
         }
 
-        return this.combustivel - 0.55 >= 0 && this.ipvaPago && pneusCalibrados;
+        return this.combustivel - 0.55 >= 0 && this.ipvaPago;
     }
 
     // função para movimentar o veículo
@@ -143,6 +143,7 @@ public class Veiculo {
         int i;
         String espacos = "";
 
+        // incluir o número de blocos andados antes da impressão do veículo
         for (i = 0; i < this.blocosAndados; i++)
             espacos += " ";
 
@@ -158,7 +159,7 @@ public class Veiculo {
         String s = "\nid: " + this.id + "\n";
 
         // valor
-        s += "Valor: " + this.valor + "\n";
+        s += "Valor: " + Veiculo.valor + "\n";
 
         // combustível
         s += "Combustível: " + this.combustivel + "\n";
@@ -171,6 +172,7 @@ public class Veiculo {
         int i;
         String pneusCalibrados = "Pneus Calibradas: ";
         for (i = 0; i < this.N_RODAS; i++) {
+            // 1 para calibrado e 0 para não calibrado
             pneusCalibrados += this.rodas[i].getCalibragem() ? "1 " : "0 ";
         }
         s += pneusCalibrados + '\n';

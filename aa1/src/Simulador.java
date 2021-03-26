@@ -1,7 +1,20 @@
 import java.util.Scanner;
 
+/*
+*   SIMULADOR DE CORRIDA DE VEÍCULOS 
+*   Desenvolvido por: Daniel Gustavo Favero
+*   RA: 2157128
+*   Professora: Luciene de Oliveira Marin
+*   Disciplina: Programação Orientada a Objetos
+*   Turma: 4CP
+*   Ano/Perído: 2021/1
+*   Universidade Tecnológica Federal do Paraná - PB
+*/
+
 public class Simulador {
+    // Número de veículos do array
     private static final int N_VEICULOS = 20;
+
     // array de veículos com o total de 20 veiculos
     private static Veiculo[] veiculos = new Veiculo[N_VEICULOS];
 
@@ -12,9 +25,14 @@ public class Simulador {
     // função para pausar a execução da aplicação
     // usada para o usuário poder ler o que tem em tela antes de prosseguir com a
     // continuação do programa
-    public static void pausarExecucao() {
+    private static void pausarExecucao() {
         Scanner pausar = new Scanner(System.in);
         pausar.nextLine();
+    }
+
+    // função para limpar a tela toda vez que o menu é mostrado novamente em tela
+    private static void limparTela() {
+        System.out.print("\033[H\033[2J");
     }
 
     // função para solicitar o id do veiculo dentro do array
@@ -126,15 +144,12 @@ public class Simulador {
                 break;
             }
             default: {
-                System.out.println("Opção inválida, tente novamente");
+                System.out.println("\nOpção inválida, tente novamente");
             }
             }
 
             pausarExecucao();
-
-            // limpar a tela toda vez que o menu é mostrado novamente
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            limparTela();
         }
     }
 
@@ -146,6 +161,7 @@ public class Simulador {
 
             // incluir o veiculo caso haja posição disponível
             if (veiculos[i] == null) {
+                // O id do veículo será sua posição dentro do array
                 veiculos[i] = new Veiculo(i);
 
                 // forçar saida do for
@@ -269,8 +285,9 @@ public class Simulador {
     }
 
     // sobrecarga do método calibrarPneuDeVeiculo
-    // caso o usuário não informar a roda e o id do carro todos os pneus de todos os
-    // carros serão calibrados
+    // caso o usuário não informar a roda e o id do veículo todos os pneus de todos
+    // os
+    // veículos serão calibrados
     public static void calibrarPneuDeVeiculo() {
         // percorrer todos os veículos e calibrar o pneu de cada um
         for (Veiculo veiculo : veiculos) {
